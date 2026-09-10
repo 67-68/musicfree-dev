@@ -1,0 +1,15 @@
+# Vamp plugin / SDK install manifest, consumed by ../music_install.sh
+#
+# Line format:
+#   <name>|<version>|<kind>|<url>|<sha256>
+#
+# kind:
+#   plugin-prebuilt  官方/第三方预编译包；下载失败会被忽略，继续走本机构建
+#   plugin-source    插件源码包；本机构建（会自动应用 analysis/patches/*.patch）
+#   sdk-source       Vamp plugin SDK 源码包；构建静态 libvamp-sdk.a 供插件链接
+#
+# sha256 留空表示不校验（首次安装可用；如需固定版本请填入校验值）。
+
+nnls-chroma|1.1|plugin-prebuilt|https://code.soundsoftware.ac.uk/attachments/download/1521/nnls-chroma-osx-v1.1.tar.bz2|
+nnls-chroma|1.1|plugin-source|https://codeload.github.com/c4dm/nnls-chroma/tar.gz/refs/tags/v1.1|
+vamp-plugin-sdk|2.10|sdk-source|https://codeload.github.com/c4dm/vamp-plugin-sdk/tar.gz/refs/heads/master|

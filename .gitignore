@@ -1,0 +1,30 @@
+# ============================================================================
+# musicfree-dev — 独立工作区仓库
+#
+# app/ 与 plugins/template/ 是各自独立的 git clone（有自己的 .git 和 remote）。
+# 本仓库只跟踪分析工具链、安装脚本与工作区文档，不把子仓库当成普通文件。
+# 子仓库代码请分别在各自仓库里提交。
+# ============================================================================
+
+app/
+plugins/template/
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.cache/
+output/
+vamp/
+vamp-build/
+apps/
+
+# Node / Electron
+node_modules/
+.webpack/
+out/
+dist/
+
+# OS / editor
+.DS_Store
+*.log

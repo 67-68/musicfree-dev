@@ -1,0 +1,9 @@
+venv/
+.cache/
+output/
+apps/
+bin/sonic-annotator
+vamp/
+vamp-build/
+__pycache__/
+*.pyc

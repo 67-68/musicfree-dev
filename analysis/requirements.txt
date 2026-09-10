@@ -1,0 +1,27 @@
+# song-analysis Python dependencies (installed into analysis/venv by music_install.sh)
+#
+# These are the direct runtime dependencies used by analysis/pipeline/*.py.
+# Transitive dependencies are resolved by pip.
+
+# structure + source separation
+all-in-one-infer==3.1.0
+demucs-infer==4.2.2
+madmom-infer==0.2.0
+
+# feature extraction / utility
+librosa==0.11.0
+soundfile==0.13.1
+matplotlib==3.9.4
+numpy==2.0.2
+scipy==1.13.1
+
+# torch runtime for all-in-one-infer / demucs-infer
+torch==2.8.0
+torchaudio==2.8.0
+
+# melody transcription (ONNX model + runtime)
+basic-pitch==0.4.0
+onnxruntime==1.19.2
+
+# Genius lyrics metadata
+lyricsgenius==3.3.1

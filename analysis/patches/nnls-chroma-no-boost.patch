@@ -1,0 +1,35 @@
+--- a/chromamethods.cpp
++++ b/chromamethods.cpp
+@@ -26,13 +26,9 @@
+ #include <cassert>
+ #include <cstdlib>
+ #include <cstdio>
+-#include <boost/tokenizer.hpp>
+-#include <boost/iostreams/device/file.hpp>
+-#include <boost/iostreams/stream.hpp>
+-#include <boost/lexical_cast.hpp>
++#include "boost_compat.hpp"
+ 
+ using namespace std;
+-using namespace boost;
+ 
+ 
+ /** Special Convolution
+@@ -391,7 +387,7 @@
+         }
+     }
+ 
+-    iostreams::stream<iostreams::file_source> chordDictFile(chordDictFilename);
++    std::ifstream chordDictFile(chordDictFilename.c_str());
+     string line;
+     // int iElement = 0;
+     int nChord = 0;
+@@ -427,7 +423,7 @@
+                             tok_iter++;                            
+                         }
+                     } else {
+-                        tempChordDict.push_back(lexical_cast<float>(*tok_iter));
++                        tempChordDict.push_back(std::atof((*tok_iter).c_str()));
+                     }
+                 }                
+                 tempChordNames.push_back(chordType);

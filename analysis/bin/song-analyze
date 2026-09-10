@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ANALYSIS_DIR="$(cd "$HERE/.." && pwd)"
+exec "$ANALYSIS_DIR/venv/bin/python" "$ANALYSIS_DIR/pipeline/song_analyze.py" "$@"
