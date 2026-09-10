@@ -15,8 +15,9 @@
 - [x] 新增 `music_install.sh` + `analysis/requirements.txt` + `analysis/requirements.vamp.txt`，Vamp 预编译不可达时自动源码构建（`analysis/patches/nnls-chroma-no-boost.patch`）
 - [x] MusicFree 集成 Phase 1-3：`src/infra/songAnalysis/`（main/preload/renderer/common + 类型）、`FullscreenPlayer` 歌曲解析面板、Sonic Visualiser 子进程开关与退出同步
 - [x] `npm run lint` / `tsc --noEmit` / SCSS 编译通过
+- [x] `musicfree-dev` 独立 git repo 初始化：`/Users/a67_68/projects/musicfree-dev`（`app/`、`plugins/template/` 排除，各自独立 repo）
 - [ ] 创建 GitHub fork 并接入 origin
-- [ ] 验证 `./scripts/dev-app.sh` 能启动桌面端（打包验证受本机 `~/.electron-gyp` 权限限制）
+- [ ] 验证 `./scripts/dev-app.sh` 能启动桌面端（webpack bundle 已用 HOME 重定向验证；GUI 启动待本地手测）
 - [ ] 设计歌词高亮/AI 讲解的插件协议扩展
 
 ## 关键路径

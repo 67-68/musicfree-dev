@@ -2,6 +2,9 @@
 
 MusicFree 本地开发工作区（类似 dsh-plugins 的组织方式，但面向 MusicFree）。
 
+本仓库是**独立 git repo**（位于 `projects/musicfree-dev`）。`app/` 与 `plugins/template/` 是各自独立的 git clone（有自己的 `.git` 和 remote），在本仓库中被 `.gitignore` 排除，代码请在各自仓库里提交。
+
+
 ## 目录
 
 ```
