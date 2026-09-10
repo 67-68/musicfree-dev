@@ -16,8 +16,10 @@
 - [x] MusicFree 集成 Phase 1-3：`src/infra/songAnalysis/`（main/preload/renderer/common + 类型）、`FullscreenPlayer` 歌曲解析面板、Sonic Visualiser 子进程开关与退出同步
 - [x] `npm run lint` / `tsc --noEmit` / SCSS 编译通过
 - [x] `musicfree-dev` 独立 git repo 初始化：`/Users/a67_68/projects/musicfree-dev`（`app/`、`plugins/template/` 排除，各自独立 repo）
+- [x] 新增 `scripts/repair-electron.sh`：兼容 npm 扁平与 pnpm `.pnpm` 布局，从缓存 zip 重建 electron `dist/` 与 `path.txt`；`install-app.sh` / `dev-app.sh` 自动调用
+- [x] `./scripts/dev-app.sh` 已能通过 electron 定位并走到 `Launched Electron app`（本 dsh 沙箱内 Chromium sandbox 初始化被禁止，属于嵌套沙箱限制，本地终端应正常）
 - [ ] 创建 GitHub fork 并接入 origin
-- [ ] 验证 `./scripts/dev-app.sh` 能启动桌面端（webpack bundle 已用 HOME 重定向验证；GUI 启动待本地手测）
+- [ ] 本地手测「歌曲解析」面板与 Sonic Visualiser 开关
 - [ ] 设计歌词高亮/AI 讲解的插件协议扩展
 
 ## 关键路径
@@ -27,6 +29,7 @@
 - Vamp 插件目录：`analysis/vamp/`（`VAMP_PATH`，由 CLI 自动注入）
 - npm 缓存：`/tmp/npm-cache`（因 ~/.npm 权限问题）
 - electron 缓存：`/tmp/electron-cache`
+- electron 修复脚本：`scripts/repair-electron.sh`（dev/install 脚本自动调用）
 - app 上游：https://github.com/maotoumao/MusicFreeDesktop （当前 dev）
 - 插件模板：https://github.com/maotoumao/MusicFreePluginTemplate
 

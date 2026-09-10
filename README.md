@@ -20,7 +20,8 @@ musicfree-dev/
 │   ├── requirements.txt     # Python 依赖
 │   └── requirements.vamp.txt# Vamp 插件/SDK 下载清单
 ├── scripts/
-│   ├── dev-app.sh           # 启动桌面端开发模式
+│   ├── dev-app.sh           # 启动桌面端（启动前自动修复 electron）
+│   ├── repair-electron.sh   # 修复 electron dist/path.txt（npm + pnpm 布局）
 │   ├── build-plugin.sh      # 构建指定插件目录为 dist/plugin.js
 │   └── install-app.sh       # 安装 app 依赖（含 electron 缓存修复）
 ├── music_install.sh         # 安装分析侧环境 + Vamp 插件
@@ -76,6 +77,7 @@ analysis/bin/song-analyze genius "艺术家" "歌名" --out-dir analysis/output/
 
 ## 环境备注
 
-- 本机 Node 版本较新，npm 安装 electron 时安装脚本可能不完整，`install-app.sh` 已处理。
+- 本机 Node 版本较新，electron 的 postinstall 可能不写出 `dist/` 与 `path.txt`，导致 `Electron failed to install correctly`；`scripts/repair-electron.sh` 会从缓存 zip 用 `ditto` 重新解包并写入 `path.txt`。
+- `repair-electron.sh` 同时兼容 npm 扁平布局和 pnpm 的 `node_modules/.pnpm/electron@*/node_modules/electron` 布局；`install-app.sh` 与 `dev-app.sh` 都会自动调用它。
 - npm 缓存被重定向到 `/tmp/npm-cache`，electron 缓存到 `/tmp/electron-cache`，因为 `~/.npm` 与 `~/Library/Caches` 存在权限问题。
 - `music_install.sh` 只负责分析侧；`app` 本体依赖仍走 `scripts/install-app.sh`，两者分开执行。
