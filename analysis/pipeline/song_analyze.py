@@ -51,6 +51,7 @@ def _setup_env() -> None:
 
 _setup_env()
 
+from pipeline.audio_prep import prepare_audio, prepared_audio_if_exists  # noqa: E402
 from pipeline.normalize import build_analysis, slugify  # noqa: E402
 from pipeline.run_features import run_features  # noqa: E402
 from pipeline.run_genius import run_genius  # noqa: E402
@@ -106,8 +107,14 @@ def cmd_run(args) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     print(f"==> out_dir: {out_dir}")
 
+    try:
+        analysis_audio = prepare_audio(audio, out_dir)
+    except RuntimeError as exc:
+        print(f"audio prepare failed: {exc}", file=sys.stderr)
+        return 1
+
     print("==> [1/4] structure (all-in-one-infer)")
-    run_structure(audio, out_dir, device=args.device)
+    run_structure(analysis_audio, out_dir, device=args.device)
 
     structure = {}
     structure_path = out_dir / "structure.json"
@@ -117,7 +124,7 @@ def cmd_run(args) -> int:
         structure = json.loads(structure_path.read_text(encoding="utf-8"))
 
     print("==> [2/4] features (beats/chords/melody)")
-    run_features(audio, out_dir, structure)
+    run_features(analysis_audio, out_dir, structure)
 
     print("==> [3/4] genius (optional)")
     genius_path = None
@@ -143,6 +150,7 @@ def cmd_run(args) -> int:
         chords_csv=chords_path if chords_path.exists() else None,
         melody_mid=melody_path if melody_path.exists() else None,
         genius_json=genius_path,
+        duration_source=analysis_audio,
     )
     report = _write_report_skeleton(out_dir, analysis)
     analysis["report_md"] = str(report)
@@ -164,7 +172,12 @@ def cmd_structure(args) -> int:
         return 1
     out_dir = _out_dir_for(audio, None, None)
     out_dir.mkdir(parents=True, exist_ok=True)
-    run_structure(audio, out_dir, device=args.device)
+    try:
+        analysis_audio = prepare_audio(audio, out_dir)
+    except RuntimeError as exc:
+        print(f"audio prepare failed: {exc}", file=sys.stderr)
+        return 1
+    run_structure(analysis_audio, out_dir, device=args.device)
     print(out_dir / "structure.json")
     return 0
 
@@ -203,7 +216,12 @@ def cmd_features(args) -> int:
     else:
         print("structure.json not found; run `structure` first", file=sys.stderr)
         return 1
-    features = run_features(audio, out_dir, structure)
+    try:
+        analysis_audio = prepare_audio(audio, out_dir)
+    except RuntimeError as exc:
+        print(f"audio prepare failed: {exc}", file=sys.stderr)
+        return 1
+    features = run_features(analysis_audio, out_dir, structure)
     print(features)
     return 0
 
@@ -246,12 +264,15 @@ def cmd_open(args) -> int:
         print("  brew install --cask sonic-visualiser", file=sys.stderr)
         return 1
 
+    # 如果之前因为 mp3 解码问题转码过，优先用转码后的 wav，保证 SV 也能打开
+    sv_audio = prepared_audio_if_exists(audio, out_dir) or audio
+
     layers = []
     for rel in ("beats.csv", "chords.csv"):
         candidate = out_dir / rel
         if candidate.exists():
             layers.append(str(candidate))
-    cmd = sv + [str(audio)] + layers
+    cmd = sv + [str(sv_audio)] + layers
     print(f"==> opening: {' '.join(cmd)}")
     subprocess.Popen(cmd)
     return 0

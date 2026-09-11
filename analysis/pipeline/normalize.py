@@ -79,6 +79,7 @@ def build_analysis(
     melody_mid: Optional[Path] = None,
     genius_json: Optional[Path] = None,
     report_md: Optional[Path] = None,
+    duration_source: Optional[Path] = None,
 ) -> Dict[str, Any]:
     audio_path = Path(audio_path).resolve()
     out_dir = Path(out_dir)
@@ -108,7 +109,7 @@ def build_analysis(
             "title": track_title,
             "artist": track_artist,
             "path": str(audio_path),
-            "duration_sec": duration_sec(audio_path),
+            "duration_sec": duration_sec(Path(duration_source) if duration_source else audio_path),
             "bpm": structure.get("bpm", 0),
         },
         "stems": stems,

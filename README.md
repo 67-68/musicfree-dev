@@ -68,6 +68,8 @@ analysis/bin/song-analyze genius "艺术家" "歌名" --out-dir analysis/output/
 
 `music_install.sh` 会把 Chordino / NNLS Chroma 装到 `analysis/vamp/`。CLI 启动时会自动把该目录加入 `VAMP_PATH`，因此通常不需要手动设置；如需手动运行 Sonic Annotator，可 `export VAMP_PATH="$PWD/analysis/vamp"`。
 
+非 wav/flac 音频（尤其 mp3）在部分 libsndfile/torchaudio 构建下会解到一半失败。分析前会自动转码成 `<out_dir>/source.wav` 并缓存：优先 `ffmpeg`，其次 `librosa`。原始文件路径仍会记录到 `analysis.json` 的 `track.path`。建议安装 ffmpeg：`brew install ffmpeg`。
+
 ## MusicFree 集成
 
 - **入口**：全屏播放页（歌词页）右下角工具栏 →「歌曲解析」按钮。

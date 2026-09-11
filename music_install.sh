@@ -294,8 +294,18 @@ verify_vamp() {
     fi
 }
 
+check_system_tools() {
+    if ! command -v ffmpeg >/dev/null 2>&1; then
+        warn "未找到 ffmpeg。部分 mp3 在 libsndfile/torchaudio 下会解到一半失败；"
+        warn "song-analyze 会优先用 ffmpeg 转码为 wav，失败时退回 librosa。"
+        warn "建议安装：brew install ffmpeg"
+    fi
+}
+
+
 main() {
     install_python
+    check_system_tools
     install_sonic_visualiser
     install_sonic_annotator
     install_vamp_plugins
